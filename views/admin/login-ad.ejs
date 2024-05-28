@@ -1,0 +1,72 @@
+<%- include('../layouts/admin-header.ejs') %>
+
+            
+<!-- <section class="login-form login-admin"> -->
+  <div class="dash-content login-form login-admin">
+
+  <form id="admin-login-form" action="/admin" method="post">
+   
+    <% error.forEach(function(err){ %>
+      <div class="alert alert-danger" role="alert">
+          <%= err %>
+      </div>
+    <%})%>
+      <h3>Admin login</h3>
+      <div class="inputBox">
+          <span class="fas fa-user"></span>
+          <input type="email" name="email" placeholder="Enter Admin's email" id="email">
+      </div>
+      <div class="inputBox">
+          <span class="fas fa-lock"></span>
+          <input type="password" name="password" placeholder="Enter Admin's password" id="password">
+      </div>
+      <input type="submit" value="sign in" class="btn">
+      <!-- <div class="flex">
+          <input type="checkbox" name="" id="remember-me">
+          <label for="remember-me">remember me</label>
+          <a href="#">forgot password?</a>
+      </div>
+      <a href="/register" class="btn">create an account</a> -->
+  </form>
+
+<!-- </section> -->
+
+
+
+<!-- <section class="vh-100 gradient-custom ">
+  <div class="container py-5 h-100">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col-12 col-lg-9 col-xl-7 w-50">
+        <div class="card shadow-2-strong card-registration" >
+          <div class="card-body p-4 p-md-5 ">
+            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 text-black">Admin Login</h3>
+          <form method="post" action="/admin">
+          
+              
+              <div class="form-outline">
+                <label class="form-label" for="email"> Email</label>
+                  <input name="email" type="email" id="email" class="form-control form-control-lg" />
+              </div>
+              <div class="form-outline">
+                <label class="form-label" for="password">Password</label>
+                <input name="password" type="password" id="password" class="form-control form-control-lg" />
+            </div>
+              
+              <button class="btn main-btn m-auto" type="submit">Log in</button>
+              
+          
+          </form>
+          </div>
+        </div>
+      </div>
+     </div> -->
+   </div> 
+</section> 
+
+
+
+
+
+        
+
+<%- include('../layouts/admin-footer.ejs') %>

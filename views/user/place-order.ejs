@@ -1,0 +1,215 @@
+<%- include('../layouts/user-header') %>
+
+
+
+
+
+
+    <div class="container">
+        <div class="main-body profile">
+            <!-- <div class="row gutters-sm mt-5"> -->
+
+
+                <div class="row mb-3">
+                    <div class="col-md-8">
+
+                        <div class="card profile-card">
+                            <div class="card-body">
+    
+                                <h2 class="text-center">Address</h2>
+                                
+    
+                                <!-- <div class="row text-center"> -->
+                                    <!-- <div class="card address-card mb-3"> -->
+                                        <!-- <div class=" col card-body"> -->
+                                            <div class="row m-auto">
+                                                <%if(address.details.length > 0){%>
+                                                <% address.details.forEach(function(ad){%>
+                                                    <div class="col-md-4 mb-3 text-start address position-relative">
+                                                        <h4 class="mb-4">Address</h4>
+                                                        <p>
+                                                         <%=ad.name%>
+                                                        <%=ad.housename%>
+                                                        </p>
+                                                        <p>
+                                                        </p>
+                                                        <p> <%=ad.street%></p>
+                                                        <p><%=ad.landmark%></p>
+                                                        
+                                                        <p><%=ad.district%></p> 
+                                                        
+                                                        <p> <%=ad.state%></p>
+                                                        
+                                                        <p><%=ad.country%></p>
+                                                        <p>Pin: <%=ad.pin%></p> 
+                                                        <p>contact :<%=ad.contact%> </p>
+                                                        <!-- <form action="/cart/payment"></form> -->
+                                                        <!-- <br><br> -->
+                                                        <div class="position-absolute bottom-0">
+
+                                                            <input  name="address" id="default" type="radio" value="<%=address.details.indexOf(ad)%>"
+                                                             onclick="selectAddress('<%=address.details.indexOf(ad)%>')"  <% if(ad.select==true){ %> checked <% }%> >
+                                                            <label class="text-dark h3" for="address">select</label>
+                                                        </div>
+                                                        <br>
+                                                       
+                                                        <!-- <a class="btn " href="/profile/">edit</a> -->
+                                                    </div>
+                                                    <%})%>
+                                                    <%}else{%>
+                                                        <h3 class="h1 text-center p-5 text-danger">You must add your address</h3>
+                                                        <%}%>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <button onclick="addAddress()" class="btn ">Add new address</button>
+            
+                                                                <form id="add-address" class="profile-form hide mt-5" method="post"
+                                                                    action="/profile/add-address">
+            
+                                                                    <div class="form-group">
+                                                                        <input type="text" class="box" name="name"
+                                                                            placeholder="name">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <input type="text" class="box" name="housename"
+                                                                            placeholder="housename">
+            
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <input type="text" class="box" name="street"
+                                                                            placeholder="Street">
+            
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <input type="text" class="box" name="landmark"
+                                                                            placeholder="Landmark">
+            
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <input type="number" class="box" name="pin"
+                                                                            placeholder="Pincode">
+            
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <select name="district" class="box"  id="district">
+                                                                            <option value="">District</option>
+                                                                            <option value="Malappuram">Malappuram</option>
+                                                                            <option value="Kozhikkode">Kozhikkode</option>
+                                                                            <option value="Palakkad">Palakkad</option>
+                                                                            <option value="Trissur">Trissur</option>
+                                                                        </select>
+                                                                       
+            
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <input type="number" class="box" name="contact"
+                                                                            placeholder="Contact">
+            
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <input type="text" class="box" name="state" value="Kerala"
+                                                                            disabled>
+            
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <input type="text" class="box" name="country"
+                                                                            value="India" disabled>
+            
+                                                                    </div>
+            
+                                                                    <br>
+                                                                    
+                                                                    <input type="submit" class="btn btn-default">
+                                                                    <!-- <button onclick="addAddress()" class="btn">cancel</button> -->
+                                                                    <a class="btn" href="/cart/place-order">cancel</a>
+                                                                    </form>
+                                                            </div>
+                                                        </div>
+                                            </div>
+                                        <!-- </div> -->
+                                    <!-- </div> -->
+                                <!-- </div> -->
+    
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 ">
+    
+                        <!-- <div class="row h-100 "> -->
+                            <div class="text-start h-100">
+    
+                                <div class="card p-4 ">
+                                    <table class="table p-4 table-sm">
+                                        <tbody>
+                                            <tr>
+                                                <td>Total Amount</th>
+                                                <td>:</td>
+                                                <td><%= total %>.00</td>
+                                            </tr>
+                                            <tr>
+                                               <td>Shipping</th> 
+                                               <td>:</td>
+                                               <td><%= shipping %>.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Discount</th>
+                                                <td>:</td>
+                                                <td> <%if(discount){%><%= discount %><%}else{%>0<%}%>.00</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="h1">Net Amount</th>
+                                                <th>:</th>
+                                                <th class="h1"><%= total + shipping - discount %>.00</th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- <h5>Total Amount : <span><%= total %>.00</span></h5>
+                                    <h6>Shipping : <span><%= shipping %>.00</span></h6>
+                                    <h6>Discount : <span><%= discount %>.00</span></h6> -->
+                                    <!-- <h3 class="h1">Net Amount : <span><%= total + shipping - discount %>.00</span></h3> -->
+                                </div>
+                                    <h2 class="pt-5">Select payment method</h2>
+                                    <form id="payment-form" action="/cart/payment" method="post" class="pay-form text-start">
+                                        <% if (total <= 1000) { %>
+                                            <input name="payment" type="radio" id="cash-payment" value="COD"> 
+                                            <label for="cash-payment">Cash on Delivery</label>
+                                            <br>
+                                            <br>
+                                        <% } %>
+                                        <input name="payment" type="radio" id="card-payment" value="Card" checked>
+                                        <label for="card-payment">Debit/Credit</label>
+                                        <br>
+                                        
+                                        <button type="submit" class="btn mb-5 ms-5" <% if(address.details.length < 1){%> disabled <%}%> > Place Order</button>
+                                    </form>
+                                </div>
+                            </div>
+                        <!-- </div> -->
+                        
+    
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- </div> -->
+        </div>
+    </div>
+
+
+
+
+
+    <%- include('../layouts/user-footer.ejs') %>
+       

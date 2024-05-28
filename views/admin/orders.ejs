@@ -1,0 +1,82 @@
+<%- include('../layouts/admin-header.ejs') %>
+
+
+
+<div class="dash-content "> 
+    <br>
+    <h2 class=" mt-5 h1">All Orders</h2>
+
+    <div class="table-responsive-sm">
+        <% if (count>0){%>
+
+        
+        <table id="example" class="table data-table align-middle" style="width:100%">
+            <% success.forEach(function(msg){ %>
+                <div class="alert alert-success" role="alert">
+                    <%= msg %>
+                </div>
+              <%})%>
+              <% error.forEach(function(err){ %>
+                <div class="alert alert-danger" role="alert">
+                    <%= err %>
+                </div>
+              <%})%>
+            <thead>
+                <tr> 
+                    <th>Date</th>
+                    <th>User</th>
+                    <th>Order</th>
+                    <th>Status</th>
+                    <th></th>
+                    
+            </tr>
+        </thead>
+        <tbody>
+            <% orders.forEach(function(order){ %>
+            
+
+                <tr>
+                    <td><% let date = order.date.split(" ") %>
+                        <%= date[0]+ " " + date[1] +" "+ date[2] +" "+ date[3] %></td>
+                    <td><%= order.userId.name %></td>
+                    <td>
+                   
+            <% order.orderDetails.forEach(function(item){ %>
+
+                        <img width="100px" height="100px" src="/public/images/product-img/<%=item.product.image%>" alt=""> <br>
+                        <%= item.product.title %> <br>
+                <% }) %>
+
+                    </td>
+                <td><%= order.status %></td>
+                <td>
+                    <% if (order.status !== 'cancelled'){%>
+                  
+                            <select name="status" id="update-order-status" class="btn" onchange="changeStatus('<%=order._id%>')">
+                                <%status.forEach(function(s){%>
+                                    <option <% if (status.indexOf(s) < status.indexOf(order.status) ){ %> disabled <% } %>  value="<%= s %>" <% if(order.status == s){ %> selected <%}%> > <%=s%></option>
+                                    <%})%>
+                    
+                            </select>
+                    <%}%>
+                </td>
+                   
+                </tr>
+                <% }) %>
+                
+            
+            
+        </tbody>
+        
+    </table>
+    <%}else{%>
+        <br><br>
+        <h3 class="text-center">No any Orders</h3>
+        <%}%>
+    </div>
+</div>
+    
+</section>
+
+
+<%- include('../layouts/admin-footer.ejs') %>

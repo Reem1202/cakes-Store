@@ -1,0 +1,48 @@
+<%- include('../layouts/user-header') %>
+
+
+
+    <section class="shopping-cart">
+
+        <h1 class="title"> My Wishlist </h1>
+        <%if( list!==null){%>
+            <%if (list.wishlist.length> 0){ %>
+                <div class="box-container w-100">
+                    <div class="wish-box row">
+                        <% list.wishlist.forEach(function(w){%>
+
+                            <div class="box col-md-5 col-lg-3 ">
+                                <img src="/public/images/product-img/<%=w.product.image%>" alt="">
+                                <h3>
+                                    <%=w.product.title%>
+                                </h3>
+                                <div class="price">₹ <%= w.product.price %>
+
+                                </div>
+                                <button class=" btn" onclick="addToCartAndRemove('<%=w.product._id%>')">Add to
+                                    Cart</button>
+                                <button class="confirmDeletion" onclick="removeFromWishlist('<%=w.product._id%>')"><i
+                                        class="fas fa-times"></i></button>
+
+                            </div>
+                            <%})%>
+
+                                </tbody>
+                                </table>
+
+
+
+                    </div>
+                    <%}else{%>
+                        <h2 class="text-center pt-5">Wishlist is empty</h2>
+                        <%}%>
+
+                            <%}else{%>
+                                <h2 class="text-center pt-5">Wishlist is empty</h2>
+                                <%}%>
+    </section>
+
+
+
+
+    <%- include('../layouts/user-footer') %>

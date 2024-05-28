@@ -1,0 +1,98 @@
+<%- include('../layouts/user-header.ejs') %>
+
+
+
+
+
+
+
+
+<!-- header section  -->
+
+<!-- <section class="heading">
+    <h1>account</h1>
+    <p> <a href="">home</a> >> register </p>
+</section> -->
+
+
+
+<!-- register form section starts -->
+
+<section class="register-form">
+
+  
+    <form id="user-signup-form" method="post" action="/register">
+      <% success.forEach(function(msg){ %>
+        <div class="alert alert-success" role="alert">
+            <%= msg %>
+        </div>
+      <%})%>
+      
+      <% error.forEach(function(err){ %>
+        <div class="alert alert-danger" role="alert">
+            <%= err %>
+        </div>
+      <%})%>
+        <h3>Register Now</h3>
+        <div class="inputBox">
+            <span class="fas fa-user"></span>
+            <input type="text" name="name" placeholder="Enter your name" id="name">
+        </div>
+        <div class="inputBox">
+            <span class="fas fa-envelope"></span>
+            <input type="email" name="email" placeholder="Enter your email" id="email">
+        </div>
+        <div class="inputBox">
+          <span class="fas fa-phone"></span>
+          <input type="number" name="contact" placeholder="Enter your contact no." id="contact">
+        </div>
+        <div class="inputBox">
+            <span class="fas fa-lock"></span>
+            <input type="password" name="password" placeholder="Enter your password" id="password">
+        </div>
+        <div class="inputBox">
+            <span class="fas fa-lock"></span>
+            <input type="password" name="cpassword" placeholder="Confirm your password" id="cpassword">
+        </div>
+        <input type="hidden" value="" name="image">
+        <input type="submit" value="sign up" class="btn">
+        <a href="/login" class="btn">Already have an account</a>
+    </form>
+
+</section>
+
+<!-- register form section ends -->
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- footer section starts  -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <%- include('../layouts/user-footer.ejs') %>

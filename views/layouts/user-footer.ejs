@@ -1,0 +1,144 @@
+   
+    <!-- Ajax Fancybox -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script> -->
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+
+    <!-- JQuery Validation -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>	
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
+    
+    <!-- <script src="js/lightbox.js"></script> -->
+
+
+    <!-- razorpay -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    
+    <!-- Bootstrap 5 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+
+    <!-- fontawesome link  -->
+    <script src="https://kit.fontawesome.com/1b7b6c9623.js" ></script>
+
+    <!-- Custom JS -->
+    <script src="../public/js/index.js" defer></script>
+    <script>
+        $("#contact-form").validate({
+          errorClass: "error fail-alert",
+        
+          rules: {
+            name: {
+              required: true,
+            },
+            email: {
+              required: true,
+              email: true
+            },
+            number: {
+              required: true,
+              number: true
+            },
+            message: {
+              required: true,
+            },
+            subscription:{
+                required : true
+            }
+          },
+          messages: {
+            name: {
+              required: "Please enter your name.",
+            },
+            number: {
+              required: "Please enter your Mobile no.",
+              number : "Please enter number"
+            },
+            email: {
+              required: "Please enter your email.",
+              email: "The email should be in the format: abc@domain.tld"
+            },
+            message: {
+              required: "Please enter your message.",
+            },
+            subscription :{
+                required : "Enter your email"
+            }
+          },
+          submitHandler: function () {
+                myfunction();
+                return false;
+            }
+        
+        });
+
+        // if ($('#contact-form').valid()) {
+        //          myfunction()
+        //     }
+function myfunction() {
+    
+    // $("#contact-form").on("submit",(e)=>{
+        // e.preventDefault()
+        $.ajax({
+            url:"https://script.google.com/macros/s/AKfycbz_ID5fQq7-pAwjyoE4aHZ7WnjaADr_wpYKU_yFCEkrwqPKe_wHywXIeO77JcnJAiUs/exec",
+            data:$("#contact-form").serialize(),
+            method:"post",
+            success:function (response){
+                alert("Form submitted successfully")
+                // $('#msg-report').addClass('show')
+                window.location.reload()
+            },
+            error:function (err){
+                alert("Something Error")
+
+            }
+        })
+    // })
+}
+$("#subscribe-form").validate({
+          errorClass: "error fail-alert",
+        
+          rules: {
+            name: {
+              required: true,
+            },
+            email: {
+              required: true,
+              email: true
+            },
+            number: {
+              required: true,
+              number: true
+            },
+            message: {
+              required: true,
+            }
+          },
+          messages: {
+            name: {
+              required: "Please enter your name.",
+            },
+            number: {
+              required: "Please enter your Mobile no.",
+              number : "Please enter number"
+            },
+            email: {
+              required: "Please enter your email.",
+              email: "The email should be in the format: abc@domain.tld"
+            },
+            message: {
+              required: "Please enter your message.",
+            }
+          },
+          submitHandler: function () {
+                myfunction();
+                return false;
+            }
+        
+        });
+    </script>
+</body>
+
+</html>

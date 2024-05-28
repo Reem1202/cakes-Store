@@ -1,0 +1,39 @@
+<%- include('../layouts/admin-header.ejs') %>
+
+<div class="dash-content container add">
+    <h2 class="page-title">Edit coupon</h2>
+    <a href="/admin/coupon" class="btn"><i class="fa fa-angle-left"></i></a>
+    <br><br>
+    <div class="row">
+        <form id="add-edit" method="post" action="/admin/coupon/edit-coupon/<%= id %>">
+            <% error.forEach(function(err){ %>
+                <div class="alert alert-success" role="alert">
+                    <%= err %>
+                </div>
+              <%})%>
+            <div class="form-group">
+                <input id="coupon" type="text" class="box" name="coupon" value="<%= coupon %>" >
+            </div>
+            <div class="form-group">
+                <input id="offer" type="text" class="box" name="offer" value="<%= offer %>" >
+            </div>
+            <div class="form-group">
+                <input id="description" type="text" class="box" name="description" value="<%= description %>" >
+            </div>
+            <div class="form-group">
+                <input id="minimum" type="number" class="box" name="minimum" value="<%= minimum %>" >
+            </div>
+            <div class="form-group">
+                <!-- <label for="title">Title</label> -->
+                <input id="expiry" type="date" class="box" name="expiry"  value="<%= expiry %>">
+            </div>
+            <br>
+            <button type="submit" class="btn btn-default">Save</button>
+        </form>
+    </div>
+</div>
+    
+</section>
+
+
+<%- include('../layouts/admin-footer.ejs') %>

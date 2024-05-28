@@ -1,0 +1,69 @@
+<%- include('../layouts/admin-header.ejs') %>
+
+
+
+<div class="dash-content"> 
+    <h2 class=" mt-5 h1">All Products</h2>
+
+    <br>
+    
+    <a href="/admin/product/add-product" ><button class="btn">Add new Product</button> </a>
+    <div class="table-responsive-sm">
+        <% if (count>0){%>
+        <table id="example" class="table data-table align-middle" style="width:100%">
+            <% success.forEach(function(msg){ %>
+                <div class="alert alert-success" role="alert">
+                    <%= msg %>
+                </div>
+              <%})%>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Price(per-Kg)</th>
+                    <th>Image</th>
+                    <th>priceRange</th>
+                    <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+          
+
+
+                <% products.forEach(function(pro){ %>
+                    <tr>
+                        <td><%= pro.title %></td>
+                        <td><%= pro.category %></td>
+                        <td><%= pro.price %>₹</td>
+                        <td>
+                        <% if (pro.image == ""){%>
+                        <img width="80px" height="80px" src="/public/images/no-image.jpg" alt="no-image">
+                        <%}else{%>
+                         <img width="80px" height="80px" src="/public/images/product-img/<%= pro.image %>" alt="<%=pro.title%> img">
+                         <%}%>
+                        </td>
+                        <td><%= pro.PriceFilters %></td>
+                        <td><a href="/admin/product/edit-product/<%= pro._id %>"><i class="fa fa-pen pe-5"></i></a>
+                            <a id="confirmDeletion" href="/admin/product/delete-product/<%= pro._id %>"><i class="fa fa-trash"></i></a></td>
+                            
+                    </tr>
+                    <% }); %>
+                
+
+            
+            
+            
+        </tbody>
+        
+    </table>
+    <%}else{%>
+        <br><br>
+        <h3 class="text-center">No any products</h3>
+        <%}%>
+    </div>
+</div>
+    
+</section>
+
+
+<%- include('../layouts/admin-footer.ejs') %>
