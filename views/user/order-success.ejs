@@ -47,11 +47,8 @@
                     View orders
                   </button></a>
                 </div>
-                <div class="modal-footer d-flex justify-content-center border-top-0 py-4">
-                  <a href="/orders">
-                  <button type="button"  id="downloadPDFBtn" class="btn btn-primary btn-lg mb-1">
-                    Download PDF
-                  </button></a>
+               
+                
                 </div>
         
   
@@ -62,19 +59,5 @@
 
 
   <%- include('../layouts/user-footer.ejs') %>
-  <script>
-    document.getElementById('downloadPDFBtn').addEventListener('click', function() {
-        fetch('/cart/download-invoice/<%= order._id %>')
-            .then(response => response.blob())
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'invoice.pdf';
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-            })
-            .catch(error => console.error('Error downloading PDF:', error));
-    });
-</script>
+ 
+  

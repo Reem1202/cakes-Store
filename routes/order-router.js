@@ -16,44 +16,39 @@ orderRouter.get("/", auth.isUser, async (req, res) => {
 
   let count = null;
   if (user) {
-    const cartItems = await Cart.findOne({ userId: user._id });
-
-    if (cartItems) {
-      count = cartItems.cart.length;
-    }
+      const cartItems = await Cart.findOne({ userId: user._id });
+      if (cartItems) {
+          count = cartItems.cart.length;
+      }
   }
+
   let wishcount = null;
-
   if (user) {
-    const wishlistItems = await Wishlist.findOne({ userId: user._id });
-
-    if (wishlistItems) {
-      wishcount = wishlistItems.wishlist.length;
-    }
+      const wishlistItems = await Wishlist.findOne({ userId: user._id });
+      if (wishlistItems) {
+          wishcount = wishlistItems.wishlist.length;
+      }
   }
-  Order.find({ userId: user._id })
-    .populate([
-      {
-        path: "orderDetails",
-        populate: {
-          path: "product",
-          model: "Product",
-        },
-      },
-    ])
-    .sort({ date: -1 })
-    .then((order) => {
-      // console.log(order, " b4");
-      // order.sort((item1, item2) => {
-      //   let getDate = (date) => new Date(date).getTime();
-      //   return getDate(item1.date) < getDate(item2.date);
-      // });
-      // console.log(order, " aftr");
-      
-      res.render("user/orders", { user, count, wishcount, order });
-    });
-});
 
+  try {
+      const orders = await Order.find({ userId: user._id })
+          .populate([
+              {
+                  path: "orderDetails",
+                  populate: {
+                      path: "product",
+                      model: "Product",
+                  },
+              },
+          ])
+          .sort({ date: -1 });
+
+      res.render("user/orders", { user, count, wishcount, orders });
+  } catch (error) {
+      console.error("Error fetching orders:", error);
+      res.status(500).send("Internal Server Error");
+  }
+});
 orderRouter.get("/order-details/:id", auth.isUser, async (req, res) => {
   try {
     let user = req.session.user;
@@ -114,7 +109,7 @@ orderRouter.post("/order-details/:id", auth.isUser, async (req, res) => {
       res.status(500).json({ error: "An error occurred while updating payment method" });
   }
 });
-orderRouter.get("/order-cancel/:id", async (req, res) => {
+orderRouter.get("/order-cancel/:id", auth.isUser, async (req, res) => {
   try {
     const orderId = req.params.id;
 
@@ -137,14 +132,23 @@ orderRouter.get("/order-cancel/:id", async (req, res) => {
 
       return res.json({ status: true, message: "Order cancelled successfully" });
     } else {
-      // For debit orders, refund the amount to the wallet balance
+      // For non-COD orders, refund the amount to the wallet balance
       const userId = order.userId;
       const amountPaid = order.amountPaid;
 
-      await Wallet.findOneAndUpdate(
-        { userId: userId },
-        { $inc: { amount: amountPaid } } // Refund the amount
-      );
+      const wallet = await Wallet.findOne({ userId: userId });
+      if (wallet) {
+        wallet.amount += amountPaid; // Refund the amount to existing wallet balance
+      } else {
+        // If wallet doesn't exist, create a new wallet entry
+        await Wallet.create({
+          userId: userId,
+          amount: amountPaid,
+          transactionType: 'credit',
+          timestamp: new Date()
+        });
+      }
+      await wallet.save();
 
       // Update the order status to cancelled
       order.status = "cancelled";
@@ -157,5 +161,4 @@ orderRouter.get("/order-cancel/:id", async (req, res) => {
     res.status(500).json({ error: "An error occurred while cancelling order" });
   }
 });
-
 module.exports = orderRouter;

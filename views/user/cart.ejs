@@ -1,191 +1,149 @@
 <%- include('../layouts/user-header') %>
 
-
-
 <section class="shopping-cart">
-    
     <h1 class="title"> My Cart </h1>
-    <%if( carts!==null ){%>
-        <% if(carts.cart.length > 0){ %>
+    <% if(carts !== null) { %>
+        <% if(carts.cart.length > 0) { %>
             <div class="cart cart-items">
-
-            <div class="box-container">
-                <% carts.cart.forEach(function(c){%>
-
-                <div class="box mb-3 p-3">
-                    <button id="confirmDeletion" class="" onclick="removeFromCart('<%=c.product._id%>','<%=c.weight%>')"><i class="fas fa-times"></i>
-                        
-                    </button>
-                    <img src="/public/images/product-img/<%=c.product.image%>" alt="">
-                    <div class="content">
-                        <h3 class="ps-3">
-                            <%=c.product.title%>
-                        </h3>
-                        <h2 class="ps-3">₹ <span id="amtOf<%=c.product._id%>">
-                            <%= c.price %>.00
-                        </span></h2>
-                        <form id="myForm" action="">
-                            <div class="form-group pe-4">
-                                <input type="radio" name="size" id="size1" value="0.5"
-                                    onclick="getPrice('<%=c.product._id%>','<%=c.product.price%>','<%=c.price%>',0.5)" <%
-                                    if(c.weight==0.5){%> checked <%}%> >
-                                    <label for="size1">0.5 Kg</label><br>
-
-                            </div>
-                            <div class="form-group pe-4">
-                
-                                <input type="radio" name="size" id="size2" value="1"
-                                    onclick="getPrice('<%=c.product._id%>','<%=c.product.price%>','<%=c.price%>',1)" <%
-                                    if(c.weight==1){%> checked <%}%> >
-                                    <label for="size2">1 Kg</label><br>
-                            </div>
-
+                <div class="box-container">
+                    <% carts.cart.forEach(function(c) { %>
+                        <div class="box mb-3 p-3">
+                            <button id="confirmDeletion" class="" onclick="removeFromCart('<%= c.product._id %>', '<%= c.weight %>')"><i class="fas fa-times"></i></button>
+                            <img src="/public/images/product-img/<%= c.product.image %>" alt="">
+                            <div class="content">
+                                <h3 class="ps-3"><%= c.product.title %></h3>
+                                <h2 class="ps-3">₹ <span id="amtOf<%= c.product._id %>"><%= c.price %>.00</span></h2>
+                                <form id="myForm" action="">
                                     <div class="form-group pe-4">
-            
-                                    <input type="radio" name="size" id="size3" value="2"
-                                        onclick="getPrice('<%=c.product._id%>','<%=c.product.price%>','<%=c.price%>',2)" <%
-                                        if(c.weight==2){%> checked <%}%>>
-                                        <label for="size3">2 Kg</label>
-                            </div>
-
-                        </form>
-                        <div id="qty" class="qty">
-                            <h3>Qty: </h3>
-                            <div>
-
-                                <%if(c.quantity > 1){%>
-                                    <button onclick="changeQuantity('<%=c.product._id%>','<%=c.weight%>',' <%=c.price%>',-1)"><i class="fas fa-minus"></i></button>
-                                    <%}%>
-                                    <span class="h1" id="qtyOf<%=c.product._id%>"><%=c.quantity%></span> 
-                                    <button onclick="changeQuantity('<%=c.product._id%>','<%=c.weight%>',' <%=c.price%>',1)"><i class="fas fa-plus"></i></button>
-                                </div>
-                        </div>
-                        
-                            <div class="price ps-3" >₹  <span id="totalOf<%=c.product._id%>"> <%=c.sub_total%></span>
-                                    
-                            </div>
-                    </div>
-                </div>
-                <%})%>
-
-            </div>
-      
-            
-            <div class="cart-total">
-                <h1 class="title">checkout cart</h1>
-                <div class="net-total">
-                    <div>
-                        <table class="">
-                            <tbody>
-                                <tr>
-                                    <th>subtotal</th>
-                                    <td>:</td>
-                                    <td><%= sum %>.00</td>
-                                </tr>
-                                <tr>
-                                    <th>shipping</th>
-                                    <td>:</td>
-                                    <td><%= shipping %>.00</td>
-                                </tr>
-                                <tr>
-                                    <th>discount</th>
-                                    <td>:</td>
-                                    <td class="text-danger"><%if(discount){%> <%= discount %><%}else{%>00<%}%>.00 </td>
-                                </tr>
-                                <tr>
-                                    <th>total</th>
-                                    <td>:</td>
-                                    <td class="h1 text-success"><%if(discount){%>  <%= sum + shipping - discount   %> <%}else{%><%= sum + shipping%> <%}%>.00</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                       
-                    </div>
-                    <div class="apply-coupon">
-                        <button id="myBtn" class="m-2">Available coupons</button>
-
-                        <!-- The Modal -->
-                        <div id="myModal" class="modal">
-
-                        <!-- Modal content -->
-                        <div class="modal-content w-50">
-                            <span class="modal-close">&times;</span>
-                            <div class="text-center ">
-
-                                <div class="row">
-                                    <%if(coupons.length > 0){%>
-                                        <table class="align-middle">
-                                            <tbody>
-                                                <%coupons.forEach(function(c){%>
-                                                <tr>
-                                                        <td>
-                                                                <p id="copy-code-<%= c.coupon %>" class="copy-code text-danger">Click  to COPY</p>
-                                                                <button type="button" id="<%=c.coupon%>"   onclick="copyToClipboard('<%=c.coupon%>')">
-                                                                    <%=c.coupon%></button>
-                                                        </td>
-                                                        <td>
-                                                            <h3><%= c.description %></h3>
-
-                                                        </td>
-                                                    </tr>
-                                                    <%})%>
-                                                </tbody>
-                                            </table>
-
-                                        <%}else{%>
-                                            <h3 class="p-5">No coupons Available</h3>
-                                            <%}%>
+                                        <input type="radio" name="size" id="size1" value="0.5" onclick="getPrice('<%= c.product._id %>', '<%= c.product.price %>', '<%= c.price %>', 0.5)" <% if(c.weight == 0.5) { %> checked <% } %> >
+                                        <label for="size1">0.5 Kg</label><br>
                                     </div>
+                                    <div class="form-group pe-4">
+                                        <input type="radio" name="size" id="size2" value="1" onclick="getPrice('<%= c.product._id %>', '<%= c.product.price %>', '<%= c.price %>', 1)" <% if(c.weight == 1) { %> checked <% } %> >
+                                        <label for="size2">1 Kg</label><br>
+                                    </div>
+                                    <div class="form-group pe-4">
+                                        <input type="radio" name="size" id="size3" value="2" onclick="getPrice('<%= c.product._id %>', '<%= c.product.price %>', '<%= c.price %>', 2)" <% if(c.weight == 2) { %> checked <% } %> >
+                                        <label for="size3">2 Kg</label>
+                                    </div>
+                                </form>
+                                <div id="qty" class="qty">
+                                    <h3>Qty: </h3>
+                                    <div>
+                                        <% if(c.quantity > 1) { %>
+                                            <button onclick="changeQuantity('<%= c.product._id %>', '<%= c.weight %>', '<%= c.price %>', -1)"><i class="fas fa-minus"></i></button>
+                                        <% } %>
+                                        <span class="h1" id="qtyOf<%= c.product._id %>"><%= c.quantity %></span>
+                                        <button onclick="changeQuantity('<%= c.product._id %>', '<%= c.weight %>', '<%= c.price %>', 1)"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div class="price ps-3">₹ <span id="totalOf<%= c.product._id %>"><%= c.sub_total %></span></div>
                             </div>
                         </div>
-
-                        </div>
-                        <form id="coupon-form" class="coupon-form" action="/cart/discount-coupon" method="post">
-                            <input id="coupon" type="text" name="coupon" placeholder="your coupon" class="box"> <br>
-                            <%error.forEach(function(er){%>
-                                <p class="text-danger h5"><%=er%></p>
-                                <%})%>
-                            <p></p>
-                            <button  type="submit" class="btn-pink">Apply Coupon</button>
-                            <% if (discount) { %>
-                                <button id="removeCouponBtn" type="button" class="btn">Remove Coupon</button>
-                            <% } %>
-                        </form>
-                    </div>
+                    <% }) %>
                 </div>
-                
-                <a href="/cart/place-order" class="btn mt-5">proceed to checkout</a>
+                <div class="cart-total">
+                    <h1 class="title">checkout cart</h1>
+                    <div class="net-total">
+                        <div>
+                            <table class="">
+                                <tbody>
+                                    <tr>
+                                        <th>subtotal</th>
+                                        <td>:</td>
+                                        <td><%= sum %>.00</td>
+                                    </tr>
+                                    <tr>
+                                        <th>shipping</th>
+                                        <td>:</td>
+                                        <td><%= shipping %>.00</td>
+                                    </tr>
+                                    <tr>
+                                        <th>discount</th>
+                                        <td>:</td>
+                                        <td class="text-danger"><% if(discount) { %> <%= discount %> <% } else { %>00 <% } %>.00</td>
+                                    </tr>
+                                    <tr>
+                                        <th>total</th>
+                                        <td>:</td>
+                                        <td class="h1 text-success"><% if(discount) { %> <%= sum + shipping - discount %> <% } else { %> <%= sum + shipping %> <% } %>.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="apply-coupon">
+                            <button id="myBtn" class="m-2">Available coupons</button>
+                            <!-- The Modal -->
+                            <div id="myModal" class="modal">
+                                <!-- Modal content -->
+                                <div class="modal-content w-50">
+                                    <span class="modal-close">&times;</span>
+                                    <div class="text-center ">
+                                        <div class="row">
+                                            <% if(coupons.length > 0) { %>
+                                                <table class="align-middle">
+                                                    <tbody>
+                                                        <% coupons.forEach(function(c) { %>
+                                                            <tr>
+                                                                <td>
+                                                                    <p id="copy-code-<%= c.coupon %>" class="copy-code text-danger">Click to COPY</p>
+                                                                    <button type="button" id="<%= c.coupon %>" onclick="copyToClipboard('<%= c.coupon %>')"><%= c.coupon %></button>
+                                                                </td>
+                                                                <td>
+                                                                    <h3><%= c.description %></h3>
+                                                                </td>
+                                                            </tr>
+                                                        <% }) %>
+                                                    </tbody>
+                                                </table>
+                                            <% } else { %>
+                                                <h3 class="p-5">No coupons Available</h3>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <form id="coupon-form" class="coupon-form">
+                                <input id="coupon" type="text" name="coupon" placeholder="your coupon" class="box"> <br>
+              <div id="coupon-error" class="text-danger h5"><% if (typeof cartError !== 'undefined') { %>
+                <%= cartError %>
+              <% } %>
             </div>
-            <%}else{%>
-                <h2 class="text-center pt-5">Cart is empty</h2>
-
-
-                <%}%>
-
-            <%}else{%>
-                <h2 class="text-center pt-5">Cart is empty</h2>
-                <%}%>
-
+                                <p></p>
+                                <button type="submit" class="btn-pink">Apply Coupon</button>
+                            </form>
+                        </div>
+                    </div>
+                    <a href="/cart/place-order" class="btn mt-5">proceed to checkout</a>
+                </div>
             </div>
-            
-              
-    </section>
+        <% } else { %>
+            <h2 class="text-center pt-5">Cart is empty</h2>
+        <% } %>
+    <% } else { %>
+        <h2 class="text-center pt-5">Cart is empty</h2>
+    <% } %>
+</section>
 
+<%- include('../layouts/user-footer.ejs') %>
 
-
-
-    <%- include('../layouts/user-footer.ejs') %>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#removeCouponBtn').click(function() {
-            $.get('/cart/remove-coupon', function(response) {
-                if (response.status) {
-                    location.reload();
-                } else {
-                    alert('Error removing coupon');
-                }
-            });
-        });
+    document.getElementById("coupon-form").addEventListener("submit", async function(event) {
+      event.preventDefault();
+      let couponCode = document.getElementById("coupon").value;
+      let response = await fetch('/cart/discount-coupon', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ coupon: couponCode })
+      });
+      let result = await response.json();
+      let couponErrorDiv = document.getElementById("coupon-error");
+      if (result.status) {
+        location.reload();
+      } else {
+        couponErrorDiv.textContent = result.message;
+      }
     });
-</script>
+    </script>

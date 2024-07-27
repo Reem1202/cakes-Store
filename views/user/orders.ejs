@@ -2,9 +2,9 @@
 
 <section class="orders">
     <h1 class="title">My Orders</h1>
-    <% if (order.length > 0) { %>
-        <% order.forEach(function(o) { %>
-            <h2 class="pt-3">Order No: <%= order.length - order.indexOf(o) %></h2>
+    <% if (orders.length > 0) { %>
+        <% orders.forEach(function(o) { %>
+            <h2 class="pt-3">Order No: <%= orders.length - orders.indexOf(o) %></h2>
             <div class="lap box-container m-5">
                 <table class="table align-middle">
                     <thead class="box">
@@ -96,5 +96,4 @@
         <h2 class="text-center pt-5">No orders</h2>
     <% } %>
 </section>
-
 <%- include('../layouts/user-footer.ejs') %>

@@ -33,41 +33,47 @@
         </thead>
         <tbody>
             <% orders.forEach(function(order){ %>
-            
-
                 <tr>
-                    <td><% let date = order.date.split(" ") %>
-                        <%= date[0]+ " " + date[1] +" "+ date[2] +" "+ date[3] %></td>
-                    <td><%= order.userId.name %></td>
                     <td>
-                   
-            <% order.orderDetails.forEach(function(item){ %>
-
-                        <img width="100px" height="100px" src="/public/images/product-img/<%=item.product.image%>" alt=""> <br>
-                        <%= item.product.title %> <br>
-                <% }) %>
-
+                        <% let date = order.date.split(" ") %>
+                        <%= date[0] + " " + date[1] + " " + date[2] + " " + date[3] %>
                     </td>
-                <td><%= order.status %></td>
-                <td>
-                    <% if (order.status !== 'cancelled'){%>
-                  
-                            <select name="status" id="update-order-status" class="btn" onchange="changeStatus('<%=order._id%>')">
-                                <%status.forEach(function(s){%>
-                                    <option <% if (status.indexOf(s) < status.indexOf(order.status) ){ %> disabled <% } %>  value="<%= s %>" <% if(order.status == s){ %> selected <%}%> > <%=s%></option>
-                                    <%})%>
-                    
+                    <td>
+                        <% if (order.userId && order.userId.name) { %>
+                            <%= order.userId.name %>
+                        <% } else { %>
+                            Unknown User
+                        <% } %>
+                    </td>
+                    <td>
+                        <% order.orderDetails.forEach(function(item){ %>
+                            <img width="100px" height="100px" src="/public/images/product-img/<%= item.product.image %>" alt=""> <br>
+                            <%= item.product.title %> <br>
+                        <% }) %>
+                    </td>
+                    <td><%= order.status %></td>
+                    <td>
+                        <% if (order.status !== 'cancelled'){ %>
+                            <select name="status" id="update-order-status" class="btn" onchange="changeStatus('<%= order._id %>')">
+                                <% status.forEach(function(s){ %>
+                                    <option 
+                                        <% if (status.indexOf(s) < status.indexOf(order.status)) { %> 
+                                            disabled 
+                                        <% } %>  
+                                        value="<%= s %>" 
+                                        <% if (order.status == s) { %> 
+                                            selected 
+                                        <% } %>
+                                    > 
+                                        <%= s %>
+                                    </option>
+                                <% }) %>
                             </select>
-                    <%}%>
-                </td>
-                   
+                        <% } %>
+                    </td>
                 </tr>
-                <% }) %>
-                
-            
-            
+            <% }) %>
         </tbody>
-        
     </table>
     <%}else{%>
         <br><br>

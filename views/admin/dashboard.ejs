@@ -1,237 +1,274 @@
-
 <%- include('../layouts/admin-header.ejs') %>
 
-
-     
-  
-   
-
-   
-
-        <div class="dash-content">
-            <div class="overview">
-                <div class="title">
-                    <i class="uil uil-tachometer-fast-alt"></i>
-                    <span class="text">Dashboard</span>
-                </div>
-
-                <div class="boxes">
-                    <div class="box">
-                        <i class="uil uil-users-alt"></i>                
-                        <span class="text">Total Verified Users</span>
-                        <span class="number"><%=user[0].count %></span>
-                        
-                    </div>
-                    <div class="box">
-                        <i class="uil uil-shopping-cart-alt"></i>
-                        <span class="text">Total Orders</span>
-                        <% if(orderCount&& orderCount.length>0 && orderCount[0].orderDetails){ %>
-                            <span class="number"><%= orderCount[0].orderDetails %></span>
-                        <% }else {%>
-                            <span class="number">N/A</span>
-                            <% } %>
-                    </div>
-                    <div class="box">
-                        <i class="uil uil-box"></i>
-                        <span class="text">Total Products</span>
-                        <span class="number"><%= productCount %></span>
-                    </div>
-                    <div class="box">
-                        <i class="uil uil-rupee-sign"></i>                        
-                        <span class="text">Total Revenue</span>
-                        <% if(total &&total.length>0){ %>
-                        
-                        <span class="number"><%= total[0].total + total[0].totalShip - total[0].totalDisc %></span>
-                        <% }else { %>
-                            <span class="number">N/A</span>
-                            <% } %>
-                    </div>
-                    <div class="box">
-                        <i class="uil uil-percentage"></i>
-                        <span class="text">Total Discount</span>
-                        <% if (total && total.totalDisc !== undefined) { %>
-                            <span class="number"><%= total.totalDisc %></span>
-                        <% } else { %>
-                            <span class="number">N/A</span> 
-                        <% } %>
-                    </div>
-                    <div class="box">
-                        
-                            <span class="text">Best Selling Products<span>
-                            <ul>
-                                <% bestSellingProducts.forEach(function(product){ %>
-                                    <li><%= product.product[0].title %> - <%= product.count %> sold</li>
-                                <% }); %>
-                            </ul>
-                        </div>
-                        
-                      
-                        
-                    </div>
-                </div>
-            </div>
-            <div class="charts row p-5">
-                <div class="col-md-6 col-sm-12 p-5">
-                    <h2>Monthly Orders</h2>
-                    <canvas id="myChart1" width="20" height="20" max-width="30"></canvas>
-
-                </div>
-                <div class="col-md-6 col-sm-12 p-5">
-                    <h2>Category-based orders</h2>
-
-                    <canvas id="myChart2" width="20" height="20" max-width="30"></canvas>
-
-                </div>
-             
-
-            </div>
-            <!-- <%if(recentOrders.length >0){%>
-            <div class="activity">
-                <div class="title">
-                    <i class="uil uil-clock-three"></i>
-                    <span class="text">Recently Placed Orders</span>
-                </div>
-
-                <div class="activity-data">
-                    <table class="table table-lg m-5 align-middle table-default">
-                        <thead>
-                            <tr>
-                                <th>Sl No.</th>
-                                <th>User</th>
-                                <th>Product</th>
-                                <td>Date</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% recentOrders.forEach(function(order){%>
-                            <tr>
-                                <td><%= recentOrders.indexOf(order) + 1%></td>
-                                <td><%=order.user.name%></td>
-                                <td><img width="100px" src="/public/images/product-img/<%=order.product.image%>" alt=""> <br>
-                                    <%=order.product.title%></td>
-                              <td>
-    <% let date = order.date.toLocaleString().split(" ") %>
-    <%= date[0] + " " + date[1] + " " + date[2] + " " + date[3] %>
-</td>
-                            </tr>
-                    <%}) %>
-
-                        </tbody>
-                    </table> -->
-                    <!-- <div class="data names">
-                        <span class="data-title">User</span>
-                        <span class="data-list"></span>
-                        
-                    </div>
-                    <div class="data email">
-                        <span class="data-title">Product</span>
-                        <span class="data-list">
-                            
-                        </span>
-                        
-                    </div> -->
-
-                   
-                <!-- </div>
-            </div>
-            <%}%> -->
-         
+<div class="dash-content">
+    <div class="overview">
+        <div class="title">
+            <i class="uil uil-tachometer-fast-alt"></i>
+            <span class="text">Dashboard</span>
         </div>
+
+        <div class="boxes">
+            <div class="box">
+                <i class="uil uil-users-alt"></i>
+                <span class="text">Total Verified Users</span>
+                <span class="number"><%= user[0].count %></span>
+            </div>
+            <div class="box">
+                <i class="uil uil-shopping-cart-alt"></i>
+                <span class="text">Total Orders</span>
+                <% if (orderCount && orderCount.length > 0 && orderCount[0].orderDetails) { %>
+                    <span class="number"><%= orderCount[0].orderDetails %></span>
+                <% } else { %>
+                    <span class="number">N/A</span>
+                <% } %>
+            </div>
+            <div class="box">
+                <i class="uil uil-box"></i>
+                <span class="text">Total Products</span>
+                <span class="number"><%= productCount %></span>
+            </div>
+            <div class="box">
+                <i class="uil uil-rupee-sign"></i>
+                <span class="text">Total Revenue</span>
+                <% if (total && total.length > 0) { %>
+                    <span class="number"><%= total[0].total + total[0].totalShip - total[0].totalDisc %></span>
+                <% } else { %>
+                    <span class="number">N/A</span>
+                <% } %>
+            </div>
+            <div class="box">
+                <i class="uil uil-percentage"></i>
+                <span class="text">Total Discount</span>
+                <% if (total && total.totalDisc !== undefined) { %>
+                    <span class="number"><%= total.totalDisc %></span>
+                <% } else { %>
+                    <span class="number">N/A</span>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <div class="charts row p-5">
        
-    </section>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <div class="col-md-6 col-sm-12 p-5">
+            <h2>Category-based orders</h2>
+            <canvas id="myChart2" width="20" height="20" max-width="30"></canvas>
+        </div>
+        <div class="col-md-6 col-sm-12 p-5">
+            <h2>Best Selling Products</h2>
+            <canvas id="bestSellingProductsChart" width="20" height="20"></canvas>
+        </div>
+      
+        <div class="charts row p-5">
+            <div class="col-md-6 col-sm-12 p-5">
+              <h2>Weekly Sales</h2>
+              <canvas id="weeklySalesChart" width="20" height="20"></canvas>
+            </div>
+            <div class="col-md-6 col-sm-12 p-5">
+              <h2>Monthly Sales</h2>
+              <canvas id="monthlySalesChart" width="20" height="20"></canvas>
+            </div>
+            <div class="col-md-6 col-sm-12 p-5">
+              <h2>Yearly Sales</h2>
+              <canvas id="yearlySalesChart" width="20" height="20"></canvas>
+            </div>
+          </div>
+         
+    </div>
+    <button class="btn" id="generate-pdf">Download Sales-report
+    </button>
+   
+</div>
 
-    <script>
-         document.addEventListener("DOMContentLoaded",chartShow,false)
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+  $.ajax({
+    url: '/admin/chart',
+    method: 'get',
+    success: function(response) {
+      if (response) {
+        makeSalesChart('weeklySalesChart', response.weeklySales, 'Weekly Sales');
+        makeSalesChart('monthlySalesChart', response.monthlySales, 'Monthly Sales');
+        makeSalesChart('yearlySalesChart', response.yearlySales, 'Yearly Sales');
+      }
+    },
+    error: function(err) {
+      console.error('Error fetching chart data:', err);
+    }
+  });
+});
 
-         function chartShow(){
 
-             $.ajax({
-                url: '/admin/chart',
-                method : 'get',
-                success : (response)=>{
-                  
+function makeSalesChart(elementId, data, title) {
+  const labels = data.map((item) => item._id);
+  const salesData = data.map((item) => item.totalSales);
 
-                        makeChart1(response.orders)
-                        makeChart2(response.categories)
+  const config = {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: title,
+        backgroundColor: ['#d60d7f', '#780446', '#f788c7', '#4f1938'],
+        borderColor: '#000',
+        borderWidth: 2,
+        data: salesData,
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: title
+      }
+    }
+  };
 
-                    
+  new Chart(document.getElementById(elementId), config);
+}
+function makeBestSellingProductsChart(details) {
+    const labels = details.map((item) => item._id);
+    const data = details.map((item) => item.totalSales);
+
+    const config = {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Best Selling Products',
+                backgroundColor: ['#d60d7f', '#780446', '#f788c7', '#4f1938', '#2a0a12'],
+                borderColor: '#000',
+                data: data,
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Best Selling Products'
+            }
+        }
+    };
+
+    new Chart(document.getElementById('bestSellingProductsChart'), config);
+}
+document.addEventListener("DOMContentLoaded", function() {
+    $.ajax({
+        url: '/admin/chart',
+        method: 'get',
+        success: function(response) {
+            console.log('Chart data response:', response);
+
+            if (response) {
+                if (response.orders) {
+                    makeChart1(response.orders);
+                } else {
+                    console.error('No orders data in response');
                 }
-             })
-            } 
-             function makeChart1(details){
-                var xValues = details.map((item)=>{
-                        return item._id[0]
-                })
-                 var yValues = details.map((item) => {
-                     return item.count
-                 })
-                 const labels = xValues;
-             
 
-             const data = {
-                 labels: labels,
-                 datasets: [{
-                     label: labels,
-                     backgroundColor: ['#d60d7f','#780446','#f788c7','#4f1938'],
-                     borderColor: '#000',
-                     borderWidth: 2,
-                     barThickness: 60,
-                     data: yValues,
-                 }]
-             };
+                if (response.categories) {
+                    makeChart2(response.categories);
+                } else {
+                    console.error('No categories data in response');
+                }
 
-             const config = {
-                 type: 'bar',
-                 data: data,
-                 options: {
-                    title : {
-                        display : true,
-                        text : 'Total orders'
+                if (response.bestSellingProducts && response.bestSellingProducts.length > 0) {
+                 makeBestSellingProductsChart(response.bestSellingProducts);
+                } else {
+                    console.error('No bestSellingProducts data in response');
+                }
+            } else {
+                console.error('No response data');
+            }
+        },
+        error: function(err) {
+            console.error('Error fetching chart data:', err);
+        }
+    });
+});
 
-                    }
-                 }
-             };
+function makeChart1(details) {
+    const labels = details.map((item) => item._id[0]);
+    const data = details.map((item) => item.count);
 
-             const myChart = new Chart(
-                 document.getElementById('myChart1'),
-                 config
-             );
-         }
-         function makeChart2(details){
-                var xValues = details.map((item)=>{
-                        return item._id
-                })
-                 var yValues = details.map((item) => {
-                     return item.count
-                 })
-                 const labels = xValues;
-             
-                 let barColors = ['#d60d7f','#780446','#f788c7','#4f1938'];
-                 
-             const data = { 
-                 labels: labels,
-                 datasets: [{
-                     label: labels,
-                     backgroundColor:barColors,
-                     borderColor: '#000',
+    const config = {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Total Orders',
+                backgroundColor: ['#d60d7f', '#780446', '#f788c7', '#4f1938'],
+                borderColor: '#000',
+                borderWidth: 2,
+                barThickness: 60,
+                data: data,
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Total orders'
+            }
+        }
+    };
 
-                     data: yValues,
-                 }]
-             };
+    const myChart = new Chart(document.getElementById('myChart1'), config);
+}
 
-             const config = {
-                 type: 'doughnut',
-                 data: data,
-                 options: {}
-             };
+function makeChart2(details) {
+    const labels = details.map((item) => item._id);
+    const data = details.map((item) => item.count);
 
-             const myChart = new Chart(
-                 document.getElementById('myChart2'),
-                 config
-             );
-         }
-            
-    </script>
+    const config = {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Category-based Orders',
+                backgroundColor: ['#d60d7f', '#780446', '#f788c7', '#4f1938'],
+                borderColor: '#000',
+                data: data,
+            }]
+        },
+        options: {}
+    };
 
-    <%- include('../layouts/admin-footer.ejs') %>
+    const myChart = new Chart(document.getElementById('myChart2'), config);
+}
+document.getElementById('generate-pdf').addEventListener('click', function () {
+    // Ensure all charts are rendered before capturing
+    setTimeout(() => {
+        // Capture each chart using html2canvas
+        Promise.all([
+            html2canvas(document.getElementById('myChart2')),
+            html2canvas(document.getElementById('bestSellingProductsChart')),
+            html2canvas(document.getElementById('weeklySalesChart')),
+            html2canvas(document.getElementById('monthlySalesChart')),
+            html2canvas(document.getElementById('yearlySalesChart'))
+        ]).then(function (canvases) {
+            // Create a new PDF document
+            var pdf = new jsPDF('p', 'pt', 'a4');
+
+            // Add each canvas to the PDF
+            canvases.forEach(function (canvas, index) {
+                var imgData = canvas.toDataURL('image/png');
+                if (index > 0) {
+                    pdf.addPage();
+                }
+                pdf.addImage(imgData, 'PNG', 20, 20);
+            });
+
+            // Save the PDF
+            pdf.save('sales-report.pdf');
+        }).catch(function (error) {
+            console.error('Error generating PDF:', error);
+        });
+    }, 1000); // Adjust delay as needed to ensure charts are rendered
+});
+
+  
+
+</script>
+
+<%- include('../layouts/admin-footer.ejs') %>

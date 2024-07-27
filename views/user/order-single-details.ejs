@@ -245,8 +245,16 @@
                         <td>:</td>
                         <td><%= order.total + order.shipping - order.discount %>.00</td>
                     </tr>
+                  
                 </tbody>
+                
             </table>
+            <div class="modal-footer d-flex justify-content-center border-top-0 py-4">
+                <a href="/orders">
+                  <a href="/cart/invoice/<%= order._id %>" target="_blank">
+                    <button type="button" class=" btn btn-primary btn-lg mb-1">Invoice </button>
+                </a>
+              </div>
         </div>
            
         </div>

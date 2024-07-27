@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'MyFont';
+    src: url('../fonts/font.woff2') format('woff2'),
+         url('../fonts/font.woff') format('woff');
+}
+
+
 :root{
     /* ===== Colors ===== */
     --primary-color: #84c7a7;

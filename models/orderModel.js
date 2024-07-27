@@ -1,11 +1,21 @@
 const mongoose = require('mongoose');
 
+const orderDetailSchema = new mongoose.Schema({
+    product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
+    },
+    quantity: Number,
+    price: Number,
+    sub_total: Number
+});
+
 const orderSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    orderDetails: [Object],
+    orderDetails: [orderDetailSchema], // Array of order detail objects referencing the Product model
     address: Object,
     total: Number,
     shipping: Number,
@@ -22,8 +32,7 @@ const orderSchema = new mongoose.Schema({
         type: String,
         enum: ['COD', 'Card'], // Add more options if needed
         required: true
-    },
-    
+    }
 });
 
 const Order = mongoose.model('Order', orderSchema);

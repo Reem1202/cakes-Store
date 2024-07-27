@@ -1,9 +1,11 @@
+
+const PDFDocument=require('pdfkit')
 const fs = require('fs');
 const Admin = require('../models/adminModel');
 const Banner = require('../models/bannerModel');
 const User = require('../models/userModel');
 const Category = require('../models/categoryModel');
-const PriceFilter= require('../models/priceFilterModel')
+const PriceFilter= require('../models/priceFilterModel');
 const Product = require('../models/productModel');
 const Order = require('../models/orderModel');
 const Coupon = require('../models/couponModel');
@@ -22,7 +24,6 @@ const adminController = {
     const adminData = await Admin.findOne({ email: email, password: password });
 
     if (adminData) {
-      console.log('admin dash');
       req.session.admin = true;
       res.redirect('/admin/dashboard');
     } else {
@@ -47,35 +48,23 @@ const adminController = {
       const categories = await Category.find({});
       const total = await Order.aggregate([
         {
-          $match: {
-            status: 'delivered'
-          }
+          $match: { status: 'delivered' }
         },
         {
           $group: {
             _id: 'null',
-            total: {
-              $sum: '$total'
-            },
-            totalDisc: {
-              $sum: '$discount'
-            },
-            totalShip: {
-              $sum: '$shipping'
-            }
+            total: { $sum: '$total' },
+            totalDisc: { $sum: '$discount' },
+            totalShip: { $sum: '$shipping' }
           }
         }
       ]);
       const recentOrders = await Order.aggregate([
         {
-          $match: {
-            status: 'placed'
-          }
+          $match: { status: 'placed' }
         },
         {
-          $sort: {
-            date: -1
-          }
+          $sort: { date: -1 }
         },
         {
           $unwind: '$orderDetails'
@@ -122,191 +111,182 @@ const adminController = {
           }
         },
         {
-          $sort: {
-            date: 1
-          }
+          $sort: { date: 1 }
         }
       ]);
      
- // Fetch best selling products
- const bestSellingProducts = await Order.aggregate([
-  {
-    $match: {
-      status: 'delivered'
+      
+      console.log(total);
+      console.log(recentOrders);
+      console.log(user);
+      res.render('admin/dashboard', {
+        admin,
+        productCount,
+        total,
+        user,
+        recentOrders,
+        orderCount,
+        categories,
+       
+      });
+    } catch (error) {
+      console.error(error);
+      res.render('admin/error', { error: "an error occurred while loading" });
     }
   },
-  {
-    $unwind: '$orderDetails'
-  },
-  {
-    $group: {
-      _id: '$orderDetails.product',
-      count: { $sum: '$orderDetails.quantity' }
-    }
-  },
-  {
-    $lookup: {
-      from: 'products',
-      localField: '_id',
-      foreignField: '_id',
-      as: 'product'
-    }
-  },
-  {
-    $project: {
-      'product.title': 1,
-      count: 1
-    }
-  },
-  {
-    $sort: {
-      count: -1
-    }
-  },
-  {
-    $limit: 5 // Limit to the top 5 best selling products
-  }
-]);
-
-// Fetch best selling categories
-const bestSellingCategories = await Order.aggregate([
-  {
-    $match: {
-      status: 'delivered'
-    }
-  },
-  {
-    $unwind: '$orderDetails'
-  },
-  {
-    $lookup: {
-      from: 'products',
-      localField: 'orderDetails.product',
-      foreignField: '_id',
-      as: 'product'
-    }
-  },
-  {
-    $unwind: '$product'
-  },
-  {
-    $lookup: {
-      from: 'categories',
-      localField: 'product.category',
-      foreignField: '_id',
-      as: 'category'
-    }
-  },
-  {
-    $unwind: '$category'
-  },
-  {
-    $group: {
-      _id: '$category._id',
-      categoryName: { $first: '$category.name' },
-      count: { $sum: '$orderDetails.quantity' }
-    }
-  },
-  {
-    $sort: {
-      count: -1
-    }
-  },
-  {
-    $limit: 5 // Limit to the top 5 best selling categories
-  }
-]);
-console.log(total);
-console.log(recentOrders);
-console.log(user);
-res.render('admin/dashboard', {
-  admin,
-  productCount,
-  total,
-  user,
-  recentOrders,
-  orderCount,
-  categories,
-  bestSellingProducts,
-  bestSellingCategories
-});
-} catch (error) {
-console.error(error);
-res.render('admin/error', { error: "an error occurred while loading" });
-}
-},
   chartData: async (req, res) => {
-    const categories = await Order.aggregate([
-      {
-        $match: {
-          status: 'delivered'
-        }
-      },
-      {
-        $unwind: '$orderDetails'
-      },
-      {
-        $project: {
-          orderDetails: 1,
-          _id: 0
-        }
-      },
-      {
-        $lookup: {
-          from: 'products',
-          localField: 'orderDetails.product',
-          foreignField: '_id',
-          as: 'items'
-        }
-      },
-      {
-        $unwind: '$items'
-      },
-      {
-        $project: {
-          'items.category': 1,
-          _id: 0,
-          'orderDetails.quantity': 1
-        }
-      },
-      {
-        $group: {
-          _id: '$items.category',
-          count: {
-            $sum: 1
+    try {
+      // Aggregate categories
+      const categories = await Order.aggregate([
+        {
+          $match: { status: 'delivered' }
+        },
+        {
+          $unwind: '$orderDetails'
+        },
+        {
+          $project: { orderDetails: 1, _id: 0 }
+        },
+        {
+          $lookup: {
+            from: 'products',
+            localField: 'orderDetails.product',
+            foreignField: '_id',
+            as: 'items'
+          }
+        },
+        {
+          $unwind: '$items'
+        },
+        {
+          $project: {
+            'items.category': 1,
+            _id: 0,
+            'orderDetails.quantity': 1
+          }
+        },
+        {
+          $group: {
+            _id: '$items.category',
+            count: { $sum: 1 }
           }
         }
-      }
-    ]);
-    const orders = await Order.aggregate([
-      {
-        $match: {
-          status: 'delivered'
-        }
-      },
-      {
-        $unwind: '$orderDetails'
-      },
-      {
-        $group: {
-          _id: {
-            $slice: [
-              {
-                $split: [
-                  '$date', ' '
-                ]
-              }, 1, 1
-            ]
-          },
-          count: { $sum: 1 }
-        }
-      }
-    ]);
-    console.log(orders);
-    console.log(categories);
+      ]);
 
-    res.json({ orders, categories });
-  },
+      // Aggregate orders with correct date format
+      const orders = await Order.aggregate([
+        {
+          $match: { status: 'delivered' }
+        },
+        {
+          $addFields: {
+            isoDate: {
+              $dateFromString: {
+                dateString: {
+                  $substrBytes: ["$date", 0, 24]  // Extract the date portion
+                }
+              }
+            }
+          }
+        },
+        {
+          $group: {
+            _id: {
+              $dateToString: { format: "%Y-%m-%d", date: "$isoDate" }
+            },
+            count: { $sum: 1 }
+          }
+        }
+      ]);
+
+      // Aggregate weekly sales
+      const weeklySales = await Order.aggregate([
+        { $match: { status: 'delivered' } },
+        {
+          $addFields: {
+            isoDate: {
+              $dateFromString: {
+                dateString: {
+                  $substrBytes: ["$date", 0, 24]  // Extract the date portion
+                }
+              }
+            }
+          }
+        },
+        {
+          $group: {
+            _id: { $week: '$isoDate' },
+            totalSales: { $sum: '$total' },
+          },
+        },
+      ]);
+
+      // Aggregate monthly sales
+      const monthlySales = await Order.aggregate([
+        { $match: { status: 'delivered' } },
+        {
+          $addFields: {
+            isoDate: {
+              $dateFromString: {
+                dateString: {
+                  $substrBytes: ["$date", 0, 24]  // Extract the date portion
+                }
+              }
+            }
+          }
+        },
+        {
+          $group: {
+            _id: { $month: '$isoDate' },
+            totalSales: { $sum: '$total' },
+          },
+        },
+      ]);
+
+      // Aggregate yearly sales
+      const yearlySales = await Order.aggregate([
+        { $match: { status: 'delivered' } },
+        {
+          $addFields: {
+            isoDate: {
+              $dateFromString: {
+                dateString: {
+                  $substrBytes: ["$date", 0, 24]  // Extract the date portion
+                }
+              }
+            }
+          }
+        },
+        {
+          $group: {
+            _id: { $year: '$isoDate' },
+            totalSales: { $sum: '$total' },
+          },
+        },
+      ]);
+
+     
+  
+    const bestSellingProducts = await Order.aggregate([
+      { $match: { status: 'delivered' } },
+      { $unwind: '$orderDetails' },
+      { $group: { _id: '$orderDetails.product', totalSales: { $sum: '$orderDetails.quantity' } } },
+      { $sort: { totalSales: -1 } },
+      { $limit: 5 },
+      { $lookup: { from: 'products', localField: '_id', foreignField: '_id', as: 'product' } },
+      { $unwind: '$product' },
+      { $project: { _id: '$product.title', totalSales: 1 } }
+  ]);
+
+  res.json({ orders, categories, weeklySales, monthlySales, yearlySales, bestSellingProducts });
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ error: 'Error fetching chart data' });
+}
+},
+  
+
+
   logout: (req, res) => {
     req.session.destroy();
     res.redirect('/admin');
@@ -341,12 +321,9 @@ res.render('admin/error', { error: "an error occurred while loading" });
         return console.log(err);
       }
 
-      console.log('error in saving');
-
       Banner.find((err, banners) => {
         if (err) {
           console.log(err);
-          console.log('error in finding');
         } else {
           req.app.locals.banners = banners;
         }
@@ -437,6 +414,7 @@ res.render('admin/error', { error: "an error occurred while loading" });
   renderNotFound: (req, res) => {
     res.render('admin/404');
   },
+
 };
 
 module.exports = adminController;

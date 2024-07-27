@@ -11,9 +11,24 @@ const auth = require("../config/auth");
 const Address = require("../models/addressModel");
 const Order = require("../models/orderModel");
 const pdf=require("pdf-creator-node");
+const Handlebars=require("handlebars")
 
 
 
+Handlebars.create({
+  allowedProtoProperties: {
+    _id: true,
+    date: true,
+    address: true,
+    orderDetails: true,
+    total: true,
+    shipping: true,
+    discount: true,
+    amountPaid: true
+  },
+  allowProtoMethodsByDefault: true,
+  allowProtoPropertiesByDefault: true
+});
 const Razorpay = require("razorpay");
 const instance = new Razorpay({
   key_id: "rzp_test_M7kqvBj4orNzLd",
@@ -96,8 +111,8 @@ cartRouter.post("/discount-coupon", async (req, res) => {
       if (total >= c.minimum) {
         if (date > exDate) {
           console.log("expired");
-          req.flash("error", "coupon expired!");
-          res.json({ status: false });
+          req.session.cartError="coupon expired!"
+          res.json({ status: false ,message:"coupon expired"});
         } else {
           if (coupon.includes("%")) {
             req.session.user.discount = parseFloat(
@@ -110,18 +125,18 @@ cartRouter.post("/discount-coupon", async (req, res) => {
           res.json({ status: true });
         }
       } else {
-        req.flash("error", `Your total amount is less than ${c.minimum}`);
-        res.json({ status: false });
+         req.session.cartError=`Your total amount is less than ${c.minimum}`;
+        res.json({ status: false, message:`Your total amount is less than ${c.minimum}`});
       }
     } else {
-      req.flash("error", "Invalid coupon!");
-      res.json({ status: false });
+     req.session.cartError="Invalid coupon!";
+      res.json({ status: false, message: "Invalid coupon!"});
     }
   });
 });
 cartRouter.get("/remove-coupon", async (req, res) => {
   try {
-    // Remove the discount from the user session
+    
     delete req.session.user.discount;
 
     // Respond with success status
@@ -325,7 +340,9 @@ cartRouter.get("/place-order", auth.isUser, async (req, res) => {
   } else {
     shipping = 100;
   }
-  // total= total+shipping;
+  
+
+  // total= total+shipping-discount;
   console.log(total);
   let count = null;
   if (user) {
@@ -416,7 +433,12 @@ cartRouter.post("/payment", auth.isUser, async (req, res) => {
       let discount = req.session.user.discount ? req.session.user.discount : 0;
       let status = paymentMethod == "COD" ? "placed" : "pending";
       
-      let amountPaid = total + shipping; // Calculate total amount paid
+      let amountPaid = total + shipping-discount; // Calculate total amount paid
+      console.log("Total:", total);
+console.log("Shipping:", shipping);
+console.log("Discount:", discount);
+console.log("Amount Paid (before saving):", amountPaid);
+
   
       let order = new Order({
         userId: user._id,
@@ -449,8 +471,8 @@ cartRouter.post("/payment", auth.isUser, async (req, res) => {
         { $pull: { cart: {} } }
       );
   
-      // Calculate the net amount to be paid, including shipping
-      let netAmount = total + shipping;
+      
+      let netAmount = total + shipping-discount;
   
       // If payment is successful and order is placed, respond accordingly
       if (status == "placed") {
@@ -507,15 +529,12 @@ cartRouter.get("/place-order/success", auth.isUser, async (req, res) => {
   try {
     let user = req.session.user;
     // Fetch the order data for the current user
-    let order = await Order.findOne({ userId: user._id }).populate([
-      {
-        path: "orderDetails",
-        populate: {
-          path: "product",
+    let order = await Order.findOne({ userId: user._id }).populate({
+      
+        path: "orderDetails.product",
+       
           model: "Product",
-        },
-      },
-    ]);
+        });
 
     let count = null;
     if (user) {
@@ -543,6 +562,8 @@ cartRouter.get("/place-order/success", auth.isUser, async (req, res) => {
     }
     let discount = req.session.user.discount;
 
+    let amountPaid=total+shipping-discount
+
     // Pass the order, total, shipping, and discount to the view
     res.render("user/order-success", {
       user,
@@ -559,91 +580,97 @@ cartRouter.get("/place-order/success", auth.isUser, async (req, res) => {
   }
 });
 // Route to generate and download the invoice PDF
-cartRouter.get("/download-invoice/:orderId", async (req, res) => {
-  try {
-      const orderId = req.params.orderId;
-      const invoicesDir = path.join(__dirname, '..', 'invoices');
-      if (!fs.existsSync(invoicesDir)) {
-          fs.mkdirSync(invoicesDir);
-      }
-
-      // Find the order by ID and populate the order details with product data
-      const order = await Order.findById(orderId).populate([
-          {
-              path: "orderDetails",
-              populate: {
-                  path: "product",
-                  model: "Product",
-              },
-          },
-      ]);
-
-      // Load your dynamic invoice data
-      const invoiceData = {
-          invoiceNumber: order._id,
-          date: order.date.toDateString(),
-          orderDetails: order.orderDetails.map(item => ({  // Use map to transform data
-              product: {
-                  name: item.product.name,
-                  description: item.product.description,
-                  price: item.product.price
-              },
-              unit: item.unit,
-              quantity: item.quantity,
-              total: item.total
-          })),
-          total: order.total,
-          shipping: order.shipping,
-          discount: order.discount,
-      };
-
-      // Read the HTML template
-      const htmlTemplate = fs.readFileSync(path.join(__dirname, 'invoiceTemplate.html'), 'utf8');
-
-
-      const options = {
-        format: 'A4',
-        orientation: 'portrait',
-        border: '10mm',
-        footer: {
-            height: "20mm",
-            contents: {
-                first: 'Cover page',
-                2: 'Second page',
-                default: '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>',
-                last: 'Last Page'
-            }
-        }
-    };
-
-      // Generate the PDF
-      const document = {
-          html: htmlTemplate,
-          data: invoiceData,
-          path: path.join(invoicesDir, `invoice_${orderId}.pdf`),
-      };
-
-      pdf.create(document, options)
-          .then((result) => {
-              console.log(result);
-              const filePath = path.join(invoicesDir, `invoice_${orderId}.pdf`);
-              res.sendFile(filePath, (err) => {
-                  if (err) {
-                      console.error('Error sending file:', err);
-                      res.status(500).send('An error occurred while sending the invoice.');
-                  }
-              });
-          })
-          .catch((error) => {
-              console.error(error);
-              res.status(500).send('An error occurred while generating the invoice.');
-          });
-  } catch (error) {
-      console.error('Error generating invoice:', error);
-      res.status(500).send('An error occurred while generating the invoice.');
-  }
+Handlebars.registerHelper('toFixed', function(num, digits) {
+  return num.toFixed(digits);
 });
 
+const htmlTemplate = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Invoice</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+    h1, h2 { color: #333; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Invoice</h1>
+  <p>Order ID: {{_id}}</p>
+  <p>Date: {{date}}</p>
+  <h2>Shipping Address</h2>
+  <p>{{address.name}}</p>
+  <p>{{address.street}}, {{address.district}}, {{address.state}} - {{address.pin}}</p>
+  <h2>Order Details</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each orderDetails}}
+      <tr>
+        <td>{{this.product.title}}</td>
+        <td>{{this.quantity}}</td>
+        <td>{{this.price}}</td>
+        <td>{{this.sub_total}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <h2>Summary</h2>
+  <p>Total: {{total}}</p>
+  <p>Shipping: {{shipping}}</p>
+  <p>Discount: {{discount}}</p>
+  <p>Amount Paid: {{amountPaid}}</p>
+</body>
+</html>
+`;
 
+cartRouter.get("/invoice/:orderId", auth.isUser, async (req, res) => {
+  try {
+    const orderId = req.params.orderId;
+    const order = await Order.findById(orderId).populate({
+      path:"orderDetails.product",
+      model:"Product"
+    })
+
+    if (!order) {
+      return res.status(404).send("Order not found");
+    }
+    console.log(order)
+
+    const document = {
+      html: htmlTemplate,
+      data: {
+        ...order.toObject(),
+        
+        orderId: order._id
+      },
+      path: path.join(__dirname, `../invoices/invoice_${orderId}.pdf`),
+      type: "",
+    };
+
+    pdf.create(document)
+      .then((result) => {
+        res.download(result.filename, `invoice_${orderId}.pdf`);
+      })
+      .catch((error) => {
+        console.error("Error generating PDF:", error);
+        res.status(500).send("Error generating invoice");
+      });
+  } catch (error) {
+    console.error("Error fetching order:", error);
+    res.status(500).send("An error occurred while fetching order data");
+  }
+});
 
 module.exports = cartRouter;
