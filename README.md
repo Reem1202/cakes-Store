@@ -59,7 +59,7 @@ In admin side,
  
    **Navbar difference for logged in user and other users**
  
-   <img src="https://user-images.githubusercontent.com/66831984/208346053-3ba03d25-a4a9-44aa-831d-4ebd94b7eb2e.png" height="100"> <img src="https://user-images.githubusercontent.com/66831984/208346075-253f5f01-411a-4164-939d-683173319168.png" height="100">
+   <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/Screenshot%20(218).png" height="100"> <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/Screenshot%20(219).png" height="100">
 
  
  - ### **Register** <br>
