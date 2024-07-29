@@ -1,4 +1,4 @@
-# cakesNbakes 
+# caKing
 A feature-rich E-commerce website for cakes & bakes, made
 with NodeJS in the backend, EJS in the frontend, and MongoDB as the
 database.
