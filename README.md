@@ -66,28 +66,27 @@ In admin side,
  
    User can register by filling the validated form, and then have to verify registered email by opening the link received in the email.<br>
  
-   <img src="https://user-images.githubusercontent.com/66831984/208336508-da6f71e9-1225-4264-9c29-cbdc3da91e01.png" width="500"> <br>
+   <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/Screenshot%20(220).png" width="500"> <br>
 
 - ### **Login** <br>
   
    User have to enter verified email and password to enter into shop. In case of forgot password, there is an option to set new password by matching OTP received to verified email. <br>
  
-   <img src="https://user-images.githubusercontent.com/66831984/208336404-6bd7254a-479b-456c-8393-ab454525e9b4.png" width="500"> <br>
+   <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/Screenshot%20(221).png" width="500"> <br>
  
    **Forgot password** 
  
-   <img width="200" alt="Capture" src="https://user-images.githubusercontent.com/66831984/208337924-d20acd4a-d12e-4e86-9593-d15459905e2c.PNG">
+   <img width="200" alt="Capture" src=https://github.com/Reem1202/cakes-Store/blob/main/screenshots/Screenshot%20(222).png>
 
  - ### **Products** <br>
   
    It is the page that listing all products for user. User can click the button for view product, add to wishlist, or add to cart. <br>
  
-   <img src="https://user-images.githubusercontent.com/66831984/208337186-e65d35ba-c77c-40ca-a01a-3110972fe4e0.png" width="500"> <br>
+   <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/localhost_4000_products.png" width="500"> <br>
 
    **Hover view on single product**
 
-    <img width="200" alt="prodct" src="https://user-images.githubusercontent.com/66831984/208338048-e2ecca87-a27d-442f-9f82-1efe5d48b06a.PNG">
-
+    <img width="200" alt="prodct" src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/Screenshot%20(223).png">
   - ### **Product details** <br>
   
     The page shows the detailed description of product with price and buttons for add to wishlist and add to cart.
