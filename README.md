@@ -91,41 +91,41 @@ In admin side,
   
     The page shows the detailed description of product with price and buttons for add to wishlist and add to cart.
   
-    <img src="https://user-images.githubusercontent.com/66831984/208337901-ee108ee0-5307-49ab-acc2-e6a49d95e72d.png" width="500"> <br>
+    <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/Screenshot%20(224).png" width="500"> <br>
  
   - ### **Wishlist** <br>
   
     User can add and remove products here to save for later and can directly move to cart for placement.
 
-    <img src="https://user-images.githubusercontent.com/66831984/208338260-66b0a17a-ef38-4e8f-9c6a-8a52a26e455a.png" width="500"> <br>
+    <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/Screenshot%20(225).png" width="500"> <br>
      
   - ### **Cart** <br>
-    <img src="https://user-images.githubusercontent.com/66831984/208338433-cdd7f538-8a16-4aff-8278-4fea8998d607.png" width="500"> <br>
+    <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/localhost_4000_cart.png" width="500"> <br>
    
     User can add or remove products to cart for order placement and can change quantity of products. Discount coupons are also available 
    and can view by clicking the button 'Available coupons'.
  
   - ### **Place order** <br>
-    <img src="https://user-images.githubusercontent.com/66831984/208338552-88ed9ce3-ba31-4769-9626-ca9d7773913c.png" width="500"> <br>
+    <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/Screenshot%20(226).png" width="500"> <br>
    
     User can select or add address for delivery and choose payment method and then place the order. After successful order placement, the window will show the below screen.
     
     **Order success page**
    
-     <img width="200" alt="ordr succs" src="https://user-images.githubusercontent.com/66831984/208345170-a11e5ff3-667a-4d52-bc76-9d625939fc76.PNG"> <br>
+     <img width="200" alt="ordr succs" src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/Screenshot%20(227).png"> <br>
    
   - ## **Order history** <br>
-    <img src="https://user-images.githubusercontent.com/66831984/208345329-649d68d7-c110-4ca2-93a5-405d2b5e3fee.png" width="500"> <br>
+    <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/localhost_4000_orders.png" width="500"> <br>
    
     User can see previous orders list and on clicking a particular order, the details of that order has shown like the image below. The cancellation of orders is available only for 2 hours from the time of order placement.
    
-    <img src="https://user-images.githubusercontent.com/66831984/208345426-18d92c23-d1f1-4d8b-b1b9-5555017ec114.png" width="500"> <br>
+    <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/Screenshot%20(228).png" width="500"> <br>
    
    - ### **Contact** <br>
    
      This is an active contact form to connect with company. User can send message through this form. There is also a location of the company.
 
-     <img src="https://user-images.githubusercontent.com/66831984/208366491-42d60a48-751b-4cec-b4a1-8cff850a3493.png" width="500"> <br>
+     <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/localhost_4000_contact.png" width="500"> <br>
     
  ## Admin side :
  
@@ -133,53 +133,53 @@ In admin side,
   
      Admin can login by typing predefined email and password and enter to dashboard.
 
-     <img src="https://user-images.githubusercontent.com/66831984/208361451-e0ed6f2d-26e9-4ba4-a46f-de5696781d10.png" width="500"> <br>
+     <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/Screenshot%20(229).png" width="500"> <br>
       
   - ###  **Dashboard** <br>
   
      Dashboard includes counts of reports and diagramatic representaion of reports
 
-     <img src="https://user-images.githubusercontent.com/66831984/208361850-be67f7ac-e3a5-4d08-9718-74aa1423aeb3.png" width="500"> <br>
+     <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/localhost_4000_admin_dashboard(Asus%20Zenbook%20Fold).png" width="500"> <br>
      
   - ### **User management** <br>
   
      Admin can view user lists and block or unblock users
 
-     <img src="https://user-images.githubusercontent.com/66831984/208362380-26918473-682e-4bb0-abe6-356e19920ab8.png" width="500"> <br>
+     <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/Screenshot%20(230).png" width="500"> <br>
 
   - ### **Category management** <br>
   
      Admin can view all categories, add new category, edit current categories, and remove unwanted categories only if product on that category is empty.
 
-     <img src="https://user-images.githubusercontent.com/66831984/208362821-a9f14c2f-f066-44df-84b1-17ec4fade4e6.png" width="500"> <br>
+     <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/Screenshot%20(231).png" width="500"> <br>
 
   - ### **Product management** <br>
     
      Admin can view all products, add new items into categories, remove products and edit product details. There is an option in edit form to add multiple images of products and also there is a checkbox to make product vegan or special to display in those categories. <br>
    
-     <img src="https://user-images.githubusercontent.com/66831984/208363466-ae62e9fb-c043-44b0-8a4d-798fd5e266f4.png" width="500"> <br>
+     <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/Screenshot%20(232).png" width="500"> <br>
 
     **Edit form for product**
  
-     <img src="https://user-images.githubusercontent.com/66831984/208364205-f9b7a7e2-b6d2-449f-96ab-8ea1e475a608.png" width="500"> <br>
+     <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/localhost_4000_admin_product_edit-product_6583cbe252ac9ab4e25d6d0a.png" width="500"> <br>
 
  - ### **Order management** <br>
  
      Admin can view all orders and update order status from this page.
 
-     <img src="https://user-images.githubusercontent.com/66831984/208364938-64749c05-7d8a-41f6-a499-8ee2a2ae791a.png" width="500"> <br>
+     <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/Screenshot%20(233).png" width="500"> <br>
 
   - ### **Coupon management** <br>
   
      Admin can create discount coupons, remove old coupons or edit coupons from this page
 
-     <img src="https://user-images.githubusercontent.com/66831984/208365092-6938c8b4-8f9d-4052-88fe-7dedae978647.png" width="500"> <br>
+     <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/Screenshot%20(234).png" width="500"> <br>
 
 - ### **Banner management** <br>
 
      Admin can add banners to display in homepage with title, description and link to category.
 
-     <img src="https://user-images.githubusercontent.com/66831984/208365283-a7d8b8e9-d9b7-4889-b815-b59a289bc103.png" width="500"> <br>
+     <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/Screenshot%20(235).png" width="500"> <br>
 
 
 
