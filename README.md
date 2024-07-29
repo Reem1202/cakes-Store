@@ -55,7 +55,7 @@ In admin side,
 
    Home page is visible for every user entering into website. It contains banners linking into categories, special products, and all categories of      products. If the user is logged in, the name will show on the navbar.
    
-   <img src="https://user-images.githubusercontent.com/66831984/208332718-9c6de240-183b-4a55-9a4c-86de3e0937ef.png" width="500"> <br>
+   <img src="https://github.com/Reem1202/cakes-Store/blob/main/screenshots/localhost_4000_%20(1).png" width="500"> <br>
  
    **Navbar difference for logged in user and other users**
  
