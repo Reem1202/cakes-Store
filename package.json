@@ -6,8 +6,6 @@
   "scripts": {
     "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
-    
-  
   },
   "author": "",
   "license": "ISC",
@@ -34,17 +32,6 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@eslint/js": "^9.8.0",
-    "eslint": "^9.8.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "eslint-plugin-promise": "^6.6.0",
-    "globals": "^15.8.0",
-    "nodemon": "^2.0.20",
-    "prettier": "^3.3.3"
+    "nodemon": "^2.0.20"
   }
 }
